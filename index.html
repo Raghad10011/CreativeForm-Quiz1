@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<title>اكتشف نوعك الإبداعي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600&display=swap" rel="stylesheet" />
+
+<style>
+  body {
+    font-family: 'Cairo', sans-serif;
+    margin: 0;
+    padding: 40px 20px;
+    text-align: center;
+    min-height: 100vh;
+    background: linear-gradient(to left, rgba(240,248,255,0.8), rgba(173,216,230,0.8));
+  }
+
+  /* حاوية عامة بعرض 800px */
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* الهيدر (الصورة فقط) بنفس عرض وستايل مربع الأسئلة */
+  header.header-box {
+    background: rgba(255,255,255,0.25);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+  }
+  .header-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 15px;
+  }
+
+  /* الفورم */
+  form#quizForm {
+    text-align: right;
+    backdrop-filter: blur(5px);
+    background: rgba(255,255,255,0.25);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  }
+
+  .question {
+    background: rgba(255,255,255,0.8);
+    padding: 15px 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+
+  .question p {
+    font-size: 18px;
+    margin-bottom: 12px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 6px 0;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+    background: #f9fafb;
+    border: 1px solid #ddd;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  label:hover { background: #eef2ff; border-color: #0d6efd; }
+  input[type="radio"] { accent-color: #0d6efd; transform: scale(1.2); }
+
+  button {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  button:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+
+  /* بطاقة النتيجة (Overlay) ــ رجعناها لنفس طريقتك */
+  .result-card {
+    display: none;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 85vw;
+    height: 75vh;
+    max-width: 650px;
+    max-height: 700px;
+
+    padding: 25px;
+    border-radius: 20px;
+    text-align: center;
+    background: rgba(255,255,255,0.2);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+    border: 3px solid transparent; /* يتلوّن ديناميكياً */
+  }
+  .result-card img {
+    display: block;
+    margin: auto;
+    border-radius: 12px;
+    max-width: 90%;
+    max-height: 60%;
+  }
+  .result-card p {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 10px;
+    line-height: 1.6;
+    color: inherit;
+    text-align: center;
+  }
+
+  .error-msg {
+    color: red;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: normal;
+  }
+</style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- الهيدر: صورة واحدة بدل الشعار والنص -->
+    <header class="header-box">
+      <img src="https://i.imgur.com/51q3Y3X.jpeg" alt="هيدر" class="header-img" />
+    </header>
+
+    <!-- نموذج الأسئلة -->
+    <form id="quizForm">
+      <div class="question">
+        <p>1. لما تبدأ مشروع جديد، أول شيء يخطر على بالك:</p>
+        <label><input type="radio" name="q1" value="إداري"> 📋 كيف نوزع المهام ونرتب العمل</label>
+        <label><input type="radio" name="q1" value="مصمم"> 🎨 كيف بيكون شكل وتصميم العمل</label>
+        <label><input type="radio" name="q1" value="ممثل"> 🎤 كيف نوصل الفكرة أمام الجمهور</label>
+        <label><input type="radio" name="q1" value="إعداد"> 📚 كيف نرتب المحتوى والمصادر</label>
+        <label><input type="radio" name="q1" value="كاتب"> ✍️ كيف نكتب القصة أو النص</label>
+        <label><input type="radio" name="q1" value="مصور"> 📷 كيف نصور ونوثق العمل</label>
+      </div>
+
+      <div class="question">
+        <p>2. أكثر جزء تحبه في أي فعالية أو مشروع:</p>
+        <label><input type="radio" name="q2" value="إداري"> 📋 وضع خطة واضحة للجميع</label>
+        <label><input type="radio" name="q2" value="مصمم"> 🎨 اختيار الألوان والخطوط</label>
+        <label><input type="radio" name="q2" value="ممثل"> 🎤 التفاعل مع الجمهور</label>
+        <label><input type="radio" name="q2" value="إعداد"> 📚 تجهيز المعلومات والمحتوى</label>
+        <label><input type="radio" name="q2" value="كاتب"> ✍️ صياغة العبارات المؤثرة</label>
+        <label><input type="radio" name="q2" value="مصور"> 📷 التقاط الصور أو الفيديو</label>
+      </div>
+
+      <div class="question">
+        <p>3. لما يصير ضغط وقت، غالبًا أنت:</p>
+        <label><input type="radio" name="q3" value="إداري"> 📋 تدير الجدول وتوزع المهام</label>
+        <label><input type="radio" name="q3" value="مصمم"> 🎨 تطلع تصميم سريع وجذاب</label>
+        <label><input type="radio" name="q3" value="ممثل"> 🎤 تحفّز الفريق وتضفي جو ممتع</label>
+        <label><input type="radio" name="q3" value="إعداد"> 📚 تراجع التفاصيل وتكمل النواقص</label>
+        <label><input type="radio" name="q3" value="كاتب"> ✍️ تكتب الرسائل أو النصوص بسرعة</label>
+        <label><input type="radio" name="q3" value="مصور"> 📷 تلتقط لقطات حاسمة</label>
+      </div>
+
+      <div class="question">
+        <p>4. أي نشاط في الجامعة تحس يحمسك أكثر:</p>
+        <label><input type="radio" name="q4" value="إداري"> 📋 إدارة المشاريع أو القيادة</label>
+        <label><input type="radio" name="q4" value="مصمم"> 🎨 الرسم والتصميم</label>
+        <label><input type="radio" name="q4" value="ممثل"> 🎤 المسرح أو الإلقاء</label>
+        <label><input type="radio" name="q4" value="إعداد"> 📚 البحث وجمع المعلومات</label>
+        <label><input type="radio" name="q4" value="كاتب"> ✍️ الكتابة الإبداعية</label>
+        <label><input type="radio" name="q4" value="مصور"> 📷 التصوير والفنون البصرية</label>
+      </div>
+
+      <div class="question">
+        <p>5. لما تحضر فيلم أو فعالية، أكثر شيء يلفت انتباهك:</p>
+        <label><input type="radio" name="q5" value="إداري"> 📋 تنظيم وترتيب الحدث</label>
+        <label><input type="radio" name="q5" value="مصمم"> 🎨 تصميم المشهد والألوان</label>
+        <label><input type="radio" name="q5" value="ممثل"> 🎤 أداء الشخصيات</label>
+        <label><input type="radio" name="q5" value="إعداد"> 📚 تسلسل الأحداث والمعلومات</label>
+        <label><input type="radio" name="q5" value="كاتب"> ✍️ الحوار والكلمات</label>
+        <label><input type="radio" name="q5" value="مصور"> 📷 جودة التصوير وزواياه</label>
+      </div>
+
+      <div class="question">
+        <p>6. أكثر أداة أو برنامج تحسها ضرورية لك:</p>
+        <label><input type="radio" name="q6" value="إداري"> 📋 برنامج جداول أو إدارة مهام</label>
+        <label><input type="radio" name="q6" value="مصمم"> 🎨 فوتوشوب أو كانفا</label>
+        <label><input type="radio" name="q6" value="ممثل"> 🎤 مايكروفون أو معدات أداء</label>
+        <label><input type="radio" name="q6" value="إعداد"> 📚 إكسل أو جوجل درايف</label>
+        <label><input type="radio" name="q6" value="كاتب"> ✍️ برنامج كتابة</label>
+        <label><input type="radio" name="q6" value="مصور"> 📷 كاميرا أو تطبيق تصوير</label>
+      </div>
+
+      <div class="question">
+        <p>7. أكثر جملة تعبر عنك:</p>
+        <label><input type="radio" name="q7" value="إداري"> 📋 النجاح في التنظيم</label>
+        <label><input type="radio" name="q7" value="مصمم"> 🎨 الفكرة شكلها أهم</label>
+        <label><input type="radio" name="q7" value="ممثل"> 🎤 أهم شيء الحضور والتأثير</label>
+        <label><input type="radio" name="q7" value="إعداد"> 📚 التفاصيل تصنع الفرق</label>
+        <label><input type="radio" name="q7" value="كاتب"> ✍️ الكلمة أقوى من الصورة</label>
+        <label><input type="radio" name="q7" value="مصور"> 📷 الصورة تحكي القصة</label>
+      </div>
+
+      <button type="button" onclick="calculateResult()">عرض النتيجة</button>
+    </form>
+  </div>
+
+  <!-- نافذة النتيجة المنبثقة -->
+  <div class="result-card" id="result"></div>
+
+<script>
+  const images = {
+    "إعداد": "https://i.imgur.com/KMDCl04.png",
+    "مصور": "https://i.imgur.com/Gu4RdCi.png",
+    "ممثل": "https://i.imgur.com/pGrrXhs.png",
+    "إداري": "https://i.imgur.com/CmfbyUa.png",
+    "كاتب": "https://i.imgur.com/ca5z6O0.png",
+    "مصمم": "https://i.imgur.com/Nh7B3Uo.png"
+  };
+
+  const descriptions = {
+    "إعداد": "تحب تجهيز المحتوى وجمع المعلومات والتأكد من دقة التفاصيل.",
+    "مصور": "تلتقط اللحظات المميزة وتحولها لصور تحكي القصة.",
+    "ممثل": "تحب التفاعل مع الناس والتأثير فيهم بالحضور والكاريزما.",
+    "إداري": "تحب التنظيم وتوزيع المهام، قائد بالفطرة وتعرف تدير أي مشروع بكفاءة.",
+    "كاتب": "تعبر بالكلمات بطريقة مؤثرة وتعرف تصيغ الرسائل بشكل جذاب.",
+    "مصمم": "عندك عين فنية وتحب تهتم بالتفاصيل الجمالية والألوان."
+  };
+
+  const resultTexts = {
+    "إعداد": "نتيجتك: الشخصية الإعدادية",
+    "مصور": "نتيجتك: الشخصية المصورة",
+    "ممثل": "نتيجتك: الشخصية الممثلة",
+    "إداري": "نتيجتك: الشخصية الإدارية",
+    "كاتب": "نتيجتك: الشخصية الكاتبة",
+    "مصمم": "نتيجتك: الشخصية المصممة"
+  };
+
+  const colors = {
+    "إعداد": "#808080",
+    "مصور": "#A52A2A",
+    "ممثل": "#4682B4",
+    "إداري": "#87CEFA",
+    "كاتب": "#000000",
+    "مصمم": "#8B4513"
+  };
+
+  /* نفس خرائط المقاسات القديمة */
+  const sizes = {
+    "إعداد": 500,
+    "مصور": 500,
+    "ممثل": 550,
+    "إداري": 550,
+    "كاتب": 500,
+    "مصمم": 500
+  };
+
+  function calculateResult() {
+    const form = document.getElementById('quizForm');
+    const questions = document.querySelectorAll('.question');
+    let allAnswered = true;
+
+    // تنظيف حدود ورسائل الأخطاء السابقة
+    questions.forEach(q => {
+      q.style.border = "1px solid rgba(0,0,0,0.1)";
+      const old = q.querySelector('.error-msg');
+      if (old) old.remove();
+    });
+
+    // التحقق من الإجابات
+    questions.forEach((q, index) => {
+      const name = `q${index + 1}`;
+      const checked = form.querySelector(`input[name="${name}"]:checked`);
+      if (!checked) {
+        allAnswered = false;
+        q.style.border = "2px solid red";
+        const msg = document.createElement('div');
+        msg.classList.add('error-msg');
+        msg.textContent = "الرجاء الإجابة على هذا السؤال";
+        q.appendChild(msg);
+      }
+    });
+
+    if (!allAnswered) return;
+
+    // حساب النتيجة
+    const formData = new FormData(form);
+    const answers = Array.from(formData.values());
+    const scores = { "إعداد":0, "مصور":0, "ممثل":0, "إداري":0, "كاتب":0, "مصمم":0 };
+    answers.forEach(ans => { if (scores[ans] !== undefined) scores[ans]++; });
+
+    let maxScore = -1;
+    let resultType = "";
+    for (const key in scores) {
+      if (scores[key] > maxScore) {
+        maxScore = scores[key];
+        resultType = key;
+      }
+    }
+
+    // عرض النتيجة كـ Overlay بالمنتصف
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = `
+      <h2 style="color:${colors[resultType]}">${resultTexts[resultType]}</h2>
+      <img src="${images[resultType]}" alt="نتيجة ${resultType}" style="width:${sizes[resultType]}px;height:${sizes[resultType]}px;">
+      <p>${descriptions[resultType]}</p>
+    `;
+    resultDiv.style.borderColor = colors[resultType];
+    resultDiv.style.display = "flex";
+  }
+
+  // اختياري: إغلاق النافذة عند الضغط على الخلفية الداكنة (لو حبيت أضف خلفية لاحقاً)
+  // وعند الضغط على ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.getElementById('result').style.display = 'none';
+    }
+  });
+</script>
+
+</body>
+</html>
