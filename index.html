@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 <meta charset="UTF-8" />
 <title>اكتشف نوعك الإبداعي</title>
@@ -12,7 +13,7 @@
     padding: 40px 20px;
     text-align: center;
     min-height: 100vh;
-    background: linear-gradient(to left, rgba(240,248,255,0.8), rgba(173,216,230,0.8));
+    background: #F1E8D8; /* اللون الجديد */
   }
 
   /* حاوية عامة بعرض 800px */
@@ -92,7 +93,7 @@
   }
   button:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
 
-  /* بطاقة النتيجة (Overlay) ــ رجعناها لنفس طريقتك */
+  /* بطاقة النتيجة (Overlay) */
   .result-card {
     display: none;
     position: fixed;
@@ -143,9 +144,9 @@
 <body>
 
   <div class="container">
-    <!-- الهيدر: صورة واحدة بدل الشعار والنص -->
+    <!-- الهيدر: صورة واحدة -->
     <header class="header-box">
-      <img src="https://i.imgur.com/51q3Y3X.jpeg" alt="هيدر" class="header-img" />
+      <img src="https://i.imgur.com/ZR4RgyM.jpeg" alt="هيدر" class="header-img" />
     </header>
 
     <!-- نموذج الأسئلة -->
@@ -224,7 +225,7 @@
     </form>
   </div>
 
-  <!-- نافذة النتيجة المنبثقة -->
+  <!-- نافذة النتيجة -->
   <div class="result-card" id="result"></div>
 
 <script>
@@ -264,7 +265,6 @@
     "مصمم": "#8B4513"
   };
 
-  /* نفس خرائط المقاسات القديمة */
   const sizes = {
     "إعداد": 500,
     "مصور": 500,
@@ -279,14 +279,12 @@
     const questions = document.querySelectorAll('.question');
     let allAnswered = true;
 
-    // تنظيف حدود ورسائل الأخطاء السابقة
     questions.forEach(q => {
       q.style.border = "1px solid rgba(0,0,0,0.1)";
       const old = q.querySelector('.error-msg');
       if (old) old.remove();
     });
 
-    // التحقق من الإجابات
     questions.forEach((q, index) => {
       const name = `q${index + 1}`;
       const checked = form.querySelector(`input[name="${name}"]:checked`);
@@ -302,7 +300,6 @@
 
     if (!allAnswered) return;
 
-    // حساب النتيجة
     const formData = new FormData(form);
     const answers = Array.from(formData.values());
     const scores = { "إعداد":0, "مصور":0, "ممثل":0, "إداري":0, "كاتب":0, "مصمم":0 };
@@ -317,7 +314,6 @@
       }
     }
 
-    // عرض النتيجة كـ Overlay بالمنتصف
     const resultDiv = document.getElementById('result');
     resultDiv.innerHTML = `
       <h2 style="color:${colors[resultType]}">${resultTexts[resultType]}</h2>
@@ -328,8 +324,6 @@
     resultDiv.style.display = "flex";
   }
 
-  // اختياري: إغلاق النافذة عند الضغط على الخلفية الداكنة (لو حبيت أضف خلفية لاحقاً)
-  // وعند الضغط على ESC
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       document.getElementById('result').style.display = 'none';
@@ -339,3 +333,4 @@
 
 </body>
 </html>
+
